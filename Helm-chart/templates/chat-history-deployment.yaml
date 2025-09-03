@@ -1,42 +1,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.chatHistoryService.name }}-deployment
+  name: {{ .Values.name }}-deployment
 spec:
-  replicas: {{ .Values.chatHistoryService.replicaCount }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.chatHistoryService.name }}
+      app: {{ .Values.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.chatHistoryService.name }}
+        app: {{ .Values.name }}
     spec:
       serviceAccountName: chat-history-service-sa
       containers:
-      - name: {{ .Values.chatHistoryService.name }}-container
-        image: "{{ .Values.chatHistoryService.image.repository }}:{{ .Values.chatHistoryService.image.tag }}"
+      - name: {{ .Values.name }}-container
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         ports:
-        - containerPort: {{ .Values.chatHistoryService.containerPort }}
+        - containerPort: {{ .Values.containerPort }}
         env:
         - name: DATABASE_PATH
-          value: {{ .Values.chatHistoryService.env.databasePath }}
+          value: {{ .Values.env.databasePath }}
         livenessProbe:
           httpGet:
             path: /healthz
-            port: {{ .Values.chatHistoryService.containerPort }}
+            port: {{ .Values.containerPort }}
           initialDelaySeconds: 10
           periodSeconds: 5
         readinessProbe:
           httpGet:
             path: /healthz
-            port: {{ .Values.chatHistoryService.containerPort }}
+            port: {{ .Values.containerPort }}
           initialDelaySeconds: 10
           periodSeconds: 5
         resources:
           requests:
-            cpu: {{ .Values.chatHistoryService.resources.requests.cpu }}
-            memory: {{ .Values.chatHistoryService.resources.requests.memory }}
+            cpu: {{ .Values.resources.requests.cpu }}
+            memory: {{ .Values.resources.requests.memory }}
           limits:
-            cpu: {{ .Values.chatHistoryService.resources.limits.cpu }}
-            memory: {{ .Values.chatHistoryService.resources.limits.memory }}
+            cpu: {{ .Values.resources.limits.cpu }}
+            memory: {{ .Values.resources.limits.memory }}
