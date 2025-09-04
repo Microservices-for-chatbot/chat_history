@@ -1,4 +1,4 @@
-# Chat History Service Configuration
+name: chat-history-service
 replicaCount: 1
 image:
   repository: amithpalissery/chat-history-service
