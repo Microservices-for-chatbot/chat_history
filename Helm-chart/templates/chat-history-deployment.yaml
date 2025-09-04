@@ -1,20 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.name }}-deployment
+  name: {{ include "chat-history-service.fullname" . }}
+  labels:
+    app: {{ include "chat-history-service.name" . }}
+    {{- include "chat-history-service.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.name }}
+      app: {{ include "chat-history-service.name" . }}
   template:
     metadata:
       labels:
-        app: {{ .Values.name }}
+        app: {{ include "chat-history-service.name" . }}
+        {{- include "chat-history-service.labels" . | nindent 8 }}
     spec:
       serviceAccountName: chat-history-service-sa
       containers:
-      - name: {{ .Values.name }}-container
+      - name: {{ include "chat-history-service.name" . }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         ports:
         - containerPort: {{ .Values.containerPort }}
