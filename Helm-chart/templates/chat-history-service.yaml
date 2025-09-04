@@ -1,10 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: chat-history-service
+  name: {{ include "chat-history-service.fullname" . }}
+  labels:
+    app: {{ include "chat-history-service.name" . }}
+    {{- include "chat-history-service.labels" . | nindent 4 }}
 spec:
   selector:
-    app: chat-history-service
+    app: {{ include "chat-history-service.name" . }}
   ports:
     - protocol: TCP
       port: 5002
